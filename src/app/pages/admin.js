@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Navbar from "../components/navbar";
-import Searchbar from "../components/searchbar";
+import Navbar from '../../components/navbar'
+import Searchbar from '../../components/searchbar'
 export default function Admin() {
   const [datos, setDatos] = useState([]);
   const [data, setData] = useState({

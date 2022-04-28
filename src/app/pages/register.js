@@ -9,14 +9,14 @@ const Div = styled.div`
   align-items: center;
 `;
 
-export default function Login() {
+export default function Register() {
   return (
     <Div>
       <div className="row">
         <div className="col s12">
           <div className="card grey lighten-3">
             <div className="card-content">
-              <h4 className="card-title center-align">Login</h4>
+              <h4 className="card-title center-align">Register</h4>
               <form>
                 <div className="row">
                   <div className="input-field col s12">
@@ -43,14 +43,14 @@ export default function Login() {
                     type="submit"
                     name="action"
                   >
-                    Iniciar seccion
+                    Registrarse
                     <i className="material-icons right">send</i>
                   </button>
                 </div>
               </form>
             </div>
             <div className="card-action">
-              <Link style={{color:"#ADD8E6"}} to={"/register"}>Registrate aqui!</Link>
+              <Link style={{color:"#ADD8E6"}} to={"/login"}>Inicia seccion!</Link>
             </div>
           </div>
         </div>
