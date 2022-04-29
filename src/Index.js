@@ -17,6 +17,7 @@ app.use(cors())
 
 //Routes
 app.use('/api', require('./routes/sitesRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
 
 
 
