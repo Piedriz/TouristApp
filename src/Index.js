@@ -4,10 +4,12 @@ const path = require('path');
 const process = require('process');
 const {mongoose} = require('./database');
 const cors = require('cors');
+const createRoles = require('./libs/initialSetup');
 
 
 //Setings 
 app.set('port', process.env.PORT || 3000)
+createRoles()
 
 //Middlewares
 app.use(express.json());
