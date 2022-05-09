@@ -2,7 +2,7 @@ const express = require('express');
 const router =express.Router();
 const Site = require('../models/sites')
 const multer = require('multer');
-
+const {verifyToken,isAdmin,isUser} = require("../middlewares/authUser")
 const storage = multer.diskStorage({
     destination: process.cwd()+"/src/public/img/uploads",
     filename: (req, file, cb) =>{
@@ -12,9 +12,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ dest: process.cwd()+"/src/public/img/uploads", storage: storage });
 
-router.get('/', async(req, res)=>{
+router.get('/',[verifyToken , isAdmin], async(req, res)=>{
     const sites = await Site.find();
-    res.json(sites)
+    res.json({data: sites, error: null})
 });
 
 router.get('/:id', async(req,res)=>{

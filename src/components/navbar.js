@@ -9,7 +9,7 @@ export default function Navbar(){
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><Link to="/login">Cerrar sección</Link></li>
                         <li><Link to="/login">Perfil</Link></li>
-                        <li><a href="collapsible.html">Home</a></li>
+                        <li><a href="collapsible.html">Home </a></li>
                     </ul>
             </div>
         </nav>

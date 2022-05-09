@@ -4,7 +4,7 @@ const Role = require("../models/roles");
 
 const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers["x-access-token"];
+    const token = req.headers["authorization"];
 
     if (!token) return res.json({ message: "no token privider" });
     const decoded = jwt.verify(token, "SECRET_STRING");
@@ -30,7 +30,7 @@ const isAdmin = async (req, res, next) => {
       }
     }
   
-    return res.json({ message: "Usted no es administrador" });
+    return res.json({error: true,  message: "Usted no es administrador" });
   
 };
 

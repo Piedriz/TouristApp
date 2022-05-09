@@ -3,7 +3,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Navbar from '../../components/navbar'
 import Searchbar from '../../components/searchbar'
+import { useNavigate } from "react-router-dom";
 export default function Admin() {
+  
   const [datos, setDatos] = useState([]);
   const [data, setData] = useState({
     title: "",
@@ -14,18 +16,56 @@ export default function Admin() {
   });
 
   const [searches, setSearches] = useState("");
-
+  let navigate = useNavigate()
   useEffect(() => {
     fetchSites();
   }, []);
 
+  function logAlert(err) {
+    let timerInterval;
+    Swal.fire({
+      icon: 'warning',
+      title: `${err}`,
+      html: "Usted será redirigido a la página principal.",
+      timer: 3000,
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+        timerInterval = setInterval(() => {
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+        navigate('/login')
+      }
+    });
+  }
+
   function fetchSites() {
+    const token = document.cookie;
     axios
-      .get("/api")
-      .then((dat) => {
-        setDatos(dat.data), console.log(dat.data);
+      .get("/api",{
+        headers:{
+          'authorization': token
+          }
       })
-      .catch((err) => console.log(err));
+      .then((dat) => {
+        if(dat.data.error === null){
+          setDatos(dat.data.data), console.log(dat);
+          
+        }else{
+          logAlert(dat.data.message)
+        }
+        
+      })
   }
 
   function handleDelete(id) {
