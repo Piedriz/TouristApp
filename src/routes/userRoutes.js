@@ -7,9 +7,9 @@ const bcrypt = require('bcrypt');
 
 // validation
 const Joi = require('joi');
-const validateUser = require('../middlewares/authUser')
+const {verifyToken,isUser,isAdmin}= require('../middlewares/authUser')
 
-
+//const isAdmin = require('../middlewares/authUser')
 
 const schemaRegister = Joi.object({
     email: Joi.string().min(6).max(255).required().email(),
@@ -69,7 +69,7 @@ router.post('/register',async (req, res) => {
 })
 
 
-router.post('/login',[validateUser], async (req, res) => {
+router.post('/login', async (req, res) => {
     // validaciones
     const { error } = schemaLogin.validate(req.body);
     if (error) return res.json({ error: error.details[0].message })

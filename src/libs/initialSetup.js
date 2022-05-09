@@ -7,7 +7,7 @@ const createRoles = async () =>{
         if(contRoles>0) return;
     
         const values = await Promise.all([
-            new Role({name: "user"}).save(),
+            new Role({name:"user"}).save(),
             new Role({name:"admin"}).save()
         ])
 
