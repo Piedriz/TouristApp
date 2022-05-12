@@ -16,7 +16,7 @@ export default function Admin() {
   });
 
   const [searches, setSearches] = useState("");
-  let navigate = useNavigate()
+  let  navigate = useNavigate()
   useEffect(() => {
     fetchSites();
   }, []);
