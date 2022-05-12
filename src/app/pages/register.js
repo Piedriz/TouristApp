@@ -18,7 +18,7 @@ export default function Register() {
     Swal.fire({
       icon: 'success',
       title: "Registrado!",
-      html: "Usted será redirigido a la página principal.",
+      html: "Usted será redirigido al inicio de sección.",
       timer: 3000,
       timerProgressBar: true,
       timerProgressBar: true,
@@ -36,7 +36,6 @@ export default function Register() {
     }).then((result) => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
-        console.log("I was closed by the timer");
         navigate('/login')
       }
     });
@@ -53,9 +52,7 @@ export default function Register() {
       })
       .then((res) => {
         if (!res.data.error){
-          document.cookie = `${res.data.token}; path=/; samesite=strict`;
           logAlert()
-          
         } else {
           Swal.fire({
             icon: 'error',
