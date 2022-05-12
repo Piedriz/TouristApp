@@ -11,10 +11,20 @@ export default function Home() {
   }, []);
 
   function getSites() {
+    const token = document.cookie;
     axios
-      .get("/api")
-      .then((res) => setSites(res.data))
-      .catch((err) => console.log(err));
+      .get("/api/home",{
+        headers:{
+          'authorization': token
+          }
+      })
+      .then((res) => {
+        if(!res.data.error){
+        setSites(res.data.data)
+        }else{
+          alert(res.data.message)
+        }
+      })
   }
   return (
     <>

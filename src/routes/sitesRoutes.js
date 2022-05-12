@@ -12,7 +12,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ dest: process.cwd()+"/src/public/img/uploads", storage: storage });
 
-router.get('/',[verifyToken , isAdmin], async(req, res)=>{
+router.get('/',[verifyToken], async(req, res)=>{
+    const sites = await Site.find();
+    res.json({data: sites, error: null})
+});
+
+router.get('/home',[verifyToken], async(req, res)=>{
     const sites = await Site.find();
     res.json({data: sites, error: null})
 });

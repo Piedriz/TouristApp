@@ -45,7 +45,7 @@ export default function Login() {
   function postUser(e) {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
-
+  
     axios
       .post("/api/user/login", {
         email: email,
