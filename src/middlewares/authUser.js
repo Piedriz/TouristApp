@@ -6,11 +6,11 @@ const verifyToken = async (req, res, next) => {
   try {
     const token = req.headers["authorization"];
 
-    if (!token) return res.json({ message: "no token privider" });
+    if (!token) return res.json({error:true, message: "no token privider" });
     const decoded = jwt.verify(token, "SECRET_STRING");
     req.userId = decoded.id;
     const user = await User.findById(req.userId, { password: 0 });
-    if (!user) return res.json({ message: "no usser found" });
+    if (!user) return res.json({error:true, message: "no usser found" });
 
     next();
   } catch (err) {
@@ -45,7 +45,7 @@ const isUser = async (req, res, next) => {
     }
   }
 
-  return res.json({message: "Usted no es usuario normal" });
+  return res.json({error:true, message: "Usted no es usuario normal" });
 };
 
 module.exports.verifyToken = verifyToken;

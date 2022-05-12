@@ -37,7 +37,7 @@ export default function Login() {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
-        navigate('/register')
+        navigate('/home')
       }
     });
   }
@@ -53,7 +53,7 @@ export default function Login() {
       })
       .then((res) => {
         if (!res.data.error){
-          document.cookie = `${res.data.token}; path=/; samesite=strict`;
+          document.cookie = `token=${res.data.token}; path=/; samesite=strict`;
           logAlert()
           
         } else {

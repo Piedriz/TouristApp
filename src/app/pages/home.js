@@ -3,15 +3,44 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Navbar from "../../components/navbar";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [sites, setSites] = useState([]);
   useEffect(() => {
     getSites();
   }, []);
+  
+  function logAlert(err) {
+    let timerInterval;
+    Swal.fire({
+      icon: 'warning',
+      title: `${err}`,
+      html: "Usted será redirigido al inicio de sección.",
+      timer: 3000,
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+        timerInterval = setInterval(() => {
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+        navigate('/login')
+      }
+    });
+  }
 
   function getSites() {
-    const token = document.cookie;
+    const token = document.cookie.replace("token=",'');
     axios
       .get("/api/home",{
         headers:{
@@ -22,7 +51,9 @@ export default function Home() {
         if(!res.data.error){
         setSites(res.data.data)
         }else{
-          alert(res.data.message)
+          document.cookie = "token=; max-age=0"
+          console.log(res)
+          logAlert(res.data.message)
         }
       })
   }

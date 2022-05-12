@@ -26,7 +26,7 @@ export default function Admin() {
     Swal.fire({
       icon: 'warning',
       title: `${err}`,
-      html: "Usted será redirigido a la página principal.",
+      html: "Usted será redirigido al inicio de sección.",
       timer: 3000,
       timerProgressBar: true,
       allowOutsideClick: false,
@@ -50,7 +50,7 @@ export default function Admin() {
   }
 
   function fetchSites() {
-    const token = document.cookie;
+    const token = document.cookie.replace("token=",'');
     axios
       .get("/api",{
         headers:{
@@ -58,10 +58,11 @@ export default function Admin() {
           }
       })
       .then((dat) => {
-        if(dat.data.error === null){
+        if(!dat.data.error){
           setDatos(dat.data.data), console.log(dat);
           
         }else{
+          document.cookie = "token=; max-age=0"
           logAlert(dat.data.message)
         }
         
