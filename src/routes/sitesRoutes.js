@@ -33,9 +33,6 @@ router.post('/',upload.single('img_DATA'), async(req, res)=>{
     site.description = req.body.description;
     site.img_path = 'img/uploads/'+req.file.filename;
     await site.save();
-    
-    
-    
 });
 
 router.put('/:id', async(req,res)=>{

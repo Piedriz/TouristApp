@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Navbar from '../../components/navbar'
-import Searchbar from '../../components/searchbar'
+import Navbar from "../../components/navbar";
+import Searchbar from "../../components/searchbar";
 import { useNavigate } from "react-router-dom";
 export default function Admin() {
-  
   const [datos, setDatos] = useState([]);
   const [data, setData] = useState({
     title: "",
@@ -16,7 +15,7 @@ export default function Admin() {
   });
 
   const [searches, setSearches] = useState("");
-  let  navigate = useNavigate()
+  let navigate = useNavigate();
   useEffect(() => {
     fetchSites();
   }, []);
@@ -24,7 +23,7 @@ export default function Admin() {
   function logAlert(err) {
     let timerInterval;
     Swal.fire({
-      icon: 'warning',
+      icon: "warning",
       title: `${err}`,
       html: "Usted será redirigido al inicio de sección.",
       timer: 3000,
@@ -34,8 +33,7 @@ export default function Admin() {
       allowEnterKey: false,
       didOpen: () => {
         Swal.showLoading();
-        timerInterval = setInterval(() => {
-        }, 100);
+        timerInterval = setInterval(() => {}, 100);
       },
       willClose: () => {
         clearInterval(timerInterval);
@@ -44,29 +42,27 @@ export default function Admin() {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
-        navigate('/login')
+        navigate("/login");
       }
     });
   }
 
   function fetchSites() {
-    const token = document.cookie.replace("token=",'');
+    const token = document.cookie.replace("token=", "");
     axios
-      .get("/api",{
-        headers:{
-          'authorization': token
-          }
+      .get("/api", {
+        headers: {
+          authorization: token,
+        },
       })
       .then((dat) => {
-        if(!dat.data.error){
+        if (!dat.data.error) {
           setDatos(dat.data.data), console.log(dat);
-          
-        }else{
-          document.cookie = "token=; max-age=0"
-          logAlert(dat.data.message)
+        } else {
+          document.cookie = "token=; max-age=0";
+          logAlert(dat.data.message);
         }
-        
-      })
+      });
   }
 
   function handleDelete(id) {
@@ -200,6 +196,19 @@ export default function Admin() {
                       </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="input-field col s12">
+                      <select value='DEFAULT' defaultValue={'DEFAULT'}>
+                        <option value="DEFAULT" disabled selected>
+                          Choose your option
+                        </option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                      </select>
+                      <label>Materialize Select</label>
+                    </div>
+                  </div>
                   <div className="row center-align">
                     <div className=" col s12">
                       <img
@@ -277,4 +286,3 @@ export default function Admin() {
     </>
   );
 }
-

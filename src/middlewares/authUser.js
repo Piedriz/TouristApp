@@ -14,7 +14,7 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    res.json({ error: err, message: "No auth" });
+    res.json({ error: true, message: "No autorizado, debe iniciar sección" });
   }
 };
 

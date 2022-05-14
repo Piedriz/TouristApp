@@ -15,9 +15,9 @@ export default function Navbar(){
             <div className="nav-wrapper container" >
                 <a href="#" className="brand-logo">TouristAPP</a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li onClick={signOff}>Cerrar sección</li>
+                        <li onClick={signOff}><a>Cerrar sección</a></li>
                         <li><Link to="/login">Perfil</Link></li>
-                        <li><a href="collapsible.html">Home </a></li>
+                        <li><Link to="/home">Home</Link></li>
                     </ul>
             </div>
         </nav>
