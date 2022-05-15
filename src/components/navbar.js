@@ -12,8 +12,8 @@ export default function Navbar(){
 
     return(
         <nav className='teal lighten-2 p'>
-            <div className="nav-wrapper container" >
-                <a href="#" className="brand-logo">TouristAPP</a>
+            <div className="nav-wrapper container">
+                <Link to="/home"><a className="brand-logo">TouristAPP</a></Link>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li onClick={signOff}><a>Cerrar sección</a></li>
                         <li><Link to="/login">Perfil</Link></li>
