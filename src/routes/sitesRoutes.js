@@ -2,6 +2,7 @@ const express = require('express');
 const router =express.Router();
 const Site = require('../models/sites')
 const multer = require('multer');
+const Sites_Type = require("../models/sites_types")
 const {verifyToken,isAdmin,isUser} = require("../middlewares/authUser")
 const storage = multer.diskStorage({
     destination: process.cwd()+"/src/public/img/uploads",
@@ -28,11 +29,21 @@ router.get('/:id', async(req,res)=>{
 });
 
 router.post('/',upload.single('img_DATA'), async(req, res)=>{
+    if(req.body.site_type){
+        const foundsite_type = await Sites_Type.find({name: {$in: req.body.site_type}})
+        site.site_type = foundsite_type(type => type._id)
+    }
     const site = new Site();
     site.title = req.body.title;
     site.description = req.body.description;
+    site.type_site = req.body.type_site;
     site.img_path = 'img/uploads/'+req.file.filename;
-    await site.save();
+    try{
+        await site.save();
+        res.json({error: null, data:site})
+    }catch(err){
+        res.json({error: err})
+    } 
 });
 
 router.put('/:id', async(req,res)=>{

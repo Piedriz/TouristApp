@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import Navbar from "../../components/navbar";
 import Searchbar from "../../components/searchbar";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 export default function Admin() {
   const [datos, setDatos] = useState([]);
   const [data, setData] = useState({
@@ -12,6 +14,7 @@ export default function Admin() {
     img_URL:
       "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
     img_DATA: null,
+    type: "",
   });
 
   const [searches, setSearches] = useState("");
@@ -19,6 +22,20 @@ export default function Admin() {
   useEffect(() => {
     fetchSites();
   }, []);
+
+  const options = [
+    { value: "Playa", label: "Playa" },
+    { value: "Atractivo histórico", label: "Atractivo historico" },
+    { value: "Parque", label: "Parque" },
+    { value: "Centro comercial", label: "Centro comercial" },
+    { value: "Museo", label: "Museo" },
+    { value: "Zoológico", label: "Zoológico" },
+    { value: "Reserva natural", label: "Reserva natural" },
+    { value: "Parque de diversión", label: "Parque de diversión" },
+    { value: "Espectaculo", label: "Teatros, estadios deportivos, cine" },
+    { value: "Otro", label: "Otro" },
+  ];
+  const animatedComponents = makeAnimated();
 
   function logAlert(err) {
     let timerInterval;
@@ -99,21 +116,31 @@ export default function Admin() {
     formData.append("description", data.description);
     formData.append("img_URL", data.img_URL);
     formData.append("img_DATA", data.img_DATA);
+    formData.append("type_site", data.type_site);
 
-    axios
-      .post("/api", formData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    e.preventDefault();
-    Swal.fire("Sítio registrado!", "Sítio registrado con exito", "success");
-    setData({
-      title: "",
-      description: "",
-      img_URL:
-        "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
-      img_DATA: null,
+    axios.post("/api", formData).then((res) => {
+      if (!res.data.error) {
+        console.log("seguro")
+        Swal.fire(
+          "Sítio registrado!",
+          "Sítio registrado con exito",
+          "success"
+        );
+        setData({
+          title: "",
+          description: "",
+          img_URL:
+            "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
+          img_DATA: null,
+          type_site: null,
+        });
+
+      fetchSites();
+      }else{
+        alert(res.data.error)
+      }
     });
-    fetchSites();
+    e.preventDefault();
   }
 
   function handleChangeTitle(e) {
@@ -122,6 +149,7 @@ export default function Admin() {
       description: data.description,
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
+      type_site: data.type_site,
     });
   }
   function handleChangeDescription(e) {
@@ -130,6 +158,7 @@ export default function Admin() {
       description: e.target.value,
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
+      type_site: data.type_site,
     });
   }
   function handleChangeImg(e) {
@@ -141,7 +170,19 @@ export default function Admin() {
       description: data.description,
       img_URL: URL.createObjectURL(file),
       img_DATA: file,
+      type_site: data.type_site,
     });
+  }
+
+  function handleChangeType(e) {
+    // setData({
+    //   title: data.title,
+    //   description: data.description,
+    //   img_URL: data.img_URL,
+    //   img_DATA: data.img_DATA,
+    //   type_site: e,
+    // });
+    console.log(e[0].value);
   }
 
   return (
@@ -197,17 +238,13 @@ export default function Admin() {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="input-field col s12">
-                      <select value='DEFAULT' defaultValue={'DEFAULT'}>
-                        <option value="DEFAULT" disabled selected>
-                          Choose your option
-                        </option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                      </select>
-                      <label>Materialize Select</label>
-                    </div>
+                    <Select
+                      options={options}
+                      isMulti
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      onChange={handleChangeType}
+                    />
                   </div>
                   <div className="row center-align">
                     <div className=" col s12">
