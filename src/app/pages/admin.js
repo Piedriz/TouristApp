@@ -14,7 +14,7 @@ export default function Admin() {
     img_URL:
       "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
     img_DATA: null,
-    type: "",
+    type_site: "Otro",
   });
 
   const [searches, setSearches] = useState("");
@@ -120,24 +120,24 @@ export default function Admin() {
 
     axios.post("/api", formData).then((res) => {
       if (!res.data.error) {
-        console.log("seguro")
-        Swal.fire(
-          "Sítio registrado!",
-          "Sítio registrado con exito",
-          "success"
-        );
+        console.log("seguro");
+        Swal.fire("Sítio registrado!", "Sítio registrado con exito", "success");
         setData({
           title: "",
           description: "",
           img_URL:
             "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
           img_DATA: null,
-          type_site: null,
+          type_site: "Otro",
         });
 
-      fetchSites();
-      }else{
-        alert(res.data.error)
+        fetchSites();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al enviar',
+          text: `${res.data.message}`,
+        })
       }
     });
     e.preventDefault();
@@ -175,14 +175,15 @@ export default function Admin() {
   }
 
   function handleChangeType(e) {
-    // setData({
-    //   title: data.title,
-    //   description: data.description,
-    //   img_URL: data.img_URL,
-    //   img_DATA: data.img_DATA,
-    //   type_site: e,
-    // });
-    console.log(e[0].value);
+    const values = e.map((type) => type.value);
+    console.log();
+    setData({
+      title: data.title,
+      description: data.description,
+      img_URL: data.img_URL,
+      img_DATA: data.img_DATA,
+      type_site: values,
+    });
   }
 
   return (
@@ -238,13 +239,16 @@ export default function Admin() {
                     </div>
                   </div>
                   <div className="row">
-                    <Select
-                      options={options}
-                      isMulti
-                      closeMenuOnSelect={false}
-                      components={animatedComponents}
-                      onChange={handleChangeType}
-                    />
+                    <div className="input-field col s12">
+                      <Select
+                        isClearable
+                        options={options}
+                        isMulti
+                        closeMenuOnSelect={false}
+                        components={animatedComponents}
+                        onChange={handleChangeType}
+                      />
+                    </div>
                   </div>
                   <div className="row center-align">
                     <div className=" col s12">

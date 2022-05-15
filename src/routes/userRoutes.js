@@ -46,7 +46,8 @@ router.post('/register',async (req, res) => {
         password: password
     });
 
-    if(req.body.roles){
+    if(req.body.roles){  
+        console.log(req.body.roles) 
         const foundRoles = await Role.find({name: {$in: req.body.roles}})
         user.roles = foundRoles.map(role => role._id)
     }else{

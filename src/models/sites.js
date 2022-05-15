@@ -7,7 +7,6 @@ const SiteSchema = new Schema({
     type_site: [{
         ref: "SitesType",
         type: Schema.Types.ObjectId
-        
     }],
     description: {type: String, required: true},
     img_path: {type: String, required: true},
