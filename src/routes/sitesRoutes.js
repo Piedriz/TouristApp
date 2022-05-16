@@ -31,7 +31,7 @@ router.get('/home',[verifyToken,isUser], async(req, res)=>{
 
 router.get('/:id', async(req,res)=>{
     const site = await Site.findById(req.params.id)
-    res.json("Sitio consultado");
+    res.json(site);
 });
 
 router.post('/',upload.single('img_DATA'), async(req, res)=>{
@@ -63,17 +63,35 @@ router.post('/',upload.single('img_DATA'), async(req, res)=>{
     } 
 });
 
-router.put('/:id', async(req,res)=>{
+router.put('/:id',upload.single('img_DATA'), async(req,res)=>{
     const {title, description} = req.body;
-    const newSite = {title, description};
-    await Site.findByIdAndUpdate(req.params.id, newSite);
-    console.log(req.params.id);
-    res.json("Sitio actualizado");
+    console.log(req.body)
+    try{
+    if(req.body.type_site){
+        const typesArray = (req.body.type_site).split(',')
+        const found = await SitesType.find({name: {$in: typesArray}})
+        const type_site = found.map(found => found._id)
+        const img_path = 'img/uploads/'+req.file.filename
+        const newSite = {title, description, img_path, type_site}
+        await Site.findByIdAndUpdate(req.params.id, newSite);
+    res.json({data: newSite ,error: null, message:"Sítio editado con exito"});
+    }else{
+        const found = await SitesType.find({name: {$in: "Otro"}})
+        const type_site = found.map(found => found._id)
+        const img_path = 'img/uploads/'+req.file.filename
+        const newSite = {title, description, img_path, type_site}
+        await Site.findByIdAndUpdate(req.params.id, newSite);
+        res.json({data: newSite ,error: null, message:"Sítio editado con exito"});
+    }
+    }catch(err){
+        res.json({error: err, message: "Ha ocurrido un error al editar"})
+    }
 });
 
 router.delete('/:id', async(req,res)=>{
     await Site.findByIdAndDelete(req.params.id);
     res.json("Sitio eliminado");
+    
 }); 
 
 module.exports = router;

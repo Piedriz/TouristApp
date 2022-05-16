@@ -5,18 +5,19 @@ import Navbar from "../../components/navbar";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Tabs from "../../components/tabs";
 
 export default function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [sites, setSites] = useState([]);
   useEffect(() => {
     getSites();
   }, []);
-  
+
   function logAlert(err) {
     let timerInterval;
     Swal.fire({
-      icon: 'warning',
+      icon: "warning",
       title: `${err}`,
       html: "Usted será redirigido al inicio de sección.",
       timer: 3000,
@@ -26,8 +27,7 @@ export default function Home() {
       allowEnterKey: false,
       didOpen: () => {
         Swal.showLoading();
-        timerInterval = setInterval(() => {
-        }, 100);
+        timerInterval = setInterval(() => {}, 100);
       },
       willClose: () => {
         clearInterval(timerInterval);
@@ -36,33 +36,39 @@ export default function Home() {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
-        navigate('/login')
+        navigate("/login");
       }
     });
   }
 
   function getSites() {
-    const token = document.cookie.replace("token=",'');
+    const token = document.cookie.replace("token=", "");
     axios
-      .get("/api/home",{
-        headers:{
-          'authorization': token
-          }
+      .get("/api/home", {
+        headers: {
+          authorization: token,
+        },
       })
       .then((res) => {
-        if(!res.data.error){
-        setSites(res.data.data)
-        }else{
-          document.cookie = "token=; max-age=0"
-          console.log(res)
-          logAlert(res.data.message)
+        if (!res.data.error) {
+          setSites(res.data.data);
+        } else {
+          document.cookie = "token=; max-age=0";
+          console.log(res);
+          logAlert(res.data.message);
         }
-      })
+      });
   }
   return (
     <>
-      <Navbar />
+      <div className="row">
+        <Navbar />
+      </div>
+
       <div className="container">
+        <div className="row">
+          <Tabs />
+        </div>
         <div className="row">
           {sites.map((sites) => {
             return (

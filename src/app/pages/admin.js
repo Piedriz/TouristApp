@@ -15,6 +15,7 @@ export default function Admin() {
       "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
     img_DATA: null,
     type_site: "Otro",
+    _id: ''
   });
 
   const [searches, setSearches] = useState("");
@@ -97,31 +98,45 @@ export default function Admin() {
     fetchSites();
   }
   function handleEdit(id) {
-    fetch("/appi/" + id, {
-      method: "PUT",
+    fetch("/api/" + id, {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data),
+        setData({
+          title: data.title,
+          description: data.description,
+          img_URL: data.img_URL,
+          img_DATA: data.img_DATA,
+          type_site: data.type_site,
+          _id: data._id,
+        });
+      })
       .catch((err) => console.log(err));
-    fetchSites();
   }
 
   function addSite(e) {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("img_URL", data.img_URL);
-    formData.append("img_DATA", data.img_DATA);
-    formData.append("type_site", data.type_site);
+    if (data._id){
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("img_URL", data.img_URL);
+      formData.append("img_DATA", data.img_DATA);
+      formData.append("type_site", data.type_site);
 
-    axios.post("/api", formData).then((res) => {
-      if (!res.data.error) {
-        console.log("seguro");
-        Swal.fire("Sítio registrado!", "Sítio registrado con exito", "success");
+      axios.put("/api/"+data._id,formData)
+        .then((data) =>{
+          Swal.fire(
+            "Sítio Editado!",
+            `${data.data.message}`,
+            "success"
+          );
+        });
         setData({
           title: "",
           description: "",
@@ -129,18 +144,46 @@ export default function Admin() {
             "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
           img_DATA: null,
           type_site: "Otro",
+          _id: ''
         });
+        fetchSites()
+        e.preventDefault()
+    } else {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("img_URL", data.img_URL);
+      formData.append("img_DATA", data.img_DATA);
+      formData.append("type_site", data.type_site);
+      axios.post("/api", formData).then((res) => {
+        if (!res.data.error) {
+          console.log("seguro");
+          Swal.fire(
+            "Sítio registrado!",
+            "Sítio registrado con exito",
+            "success"
+          );
+          setData({
+            title: "",
+            description: "",
+            img_URL:
+              "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
+            img_DATA: null,
+            type_site: "Otro",
+            _id: ''
+          });
 
-        fetchSites();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al enviar',
-          text: `${res.data.message}`,
-        })
-      }
-    });
-    e.preventDefault();
+          fetchSites();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error al enviar",
+            text: `${res.data.message}`,
+          });
+        }
+      });
+      e.preventDefault();
+    }
   }
 
   function handleChangeTitle(e) {
@@ -150,6 +193,7 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: data.type_site,
+      _id: data._id
     });
   }
   function handleChangeDescription(e) {
@@ -159,6 +203,7 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: data.type_site,
+      _id: data._id
     });
   }
   function handleChangeImg(e) {
@@ -171,6 +216,7 @@ export default function Admin() {
       img_URL: URL.createObjectURL(file),
       img_DATA: file,
       type_site: data.type_site,
+      _id: data._id
     });
   }
 
@@ -183,12 +229,15 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: values,
+      _id: data._id
     });
   }
 
   return (
     <>
-      <Navbar />
+      <div className="row">
+        <Navbar />
+      </div>
       <div className="container">
         <div className="row">
           <div className="col s4">
