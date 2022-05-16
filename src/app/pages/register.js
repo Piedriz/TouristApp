@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -40,6 +41,43 @@ export default function Register() {
       }
     });
   }
+  useEffect(()=>{
+    const token = document.cookie.replace("token=", "");
+    axios.get("/api/user/register",{
+      headers: {
+        loginstate: token,
+      },
+    }).then(data => {
+      if(data.data.error){
+      let timerInterval;
+      Swal.fire({
+        icon: 'error',
+        title: `${data.data.message}`,
+        html: "Usted será redirigido a la página principal.",
+        timer: 3000,
+        timerProgressBar: true,
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+          timerInterval = setInterval(() => {
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+          navigate('/home')
+        }
+      });
+    }
+    })
+  })
 
   function postUser(e) {
     const email = document.querySelector("#email").value;

@@ -7,6 +7,10 @@ const UserSchema = new Schema({
     roles: [{
         ref: "Role",
         type: Schema.Types.ObjectId
+    }],
+    favorites: [{
+        ref: "Site",
+        type: Schema.Types.ObjectId
     }]
 }); 
  
