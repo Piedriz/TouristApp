@@ -13,7 +13,7 @@ export default function Navbar(){
     return(
         <nav className='teal lighten-2 p'>
             <div className="nav-wrapper container">
-                <Link to="/home"><a className="brand-logo">TouristAPP</a></Link>
+                    <a className="brand-logo"><Link to="/home">TouristAPP</Link></a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li onClick={signOff}><a>Cerrar sección</a></li>
                         <li><Link to="/login">Perfil</Link></li>

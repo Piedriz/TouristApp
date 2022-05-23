@@ -21,12 +21,14 @@ const schemaNewSite = Joi.object({
 
 router.get('/',[verifyToken,isAdmin], async(req, res)=>{
     const sites = await Site.find();
+   
     res.json({data: sites, error: null})
 });
 
 router.get('/home',[verifyToken,isUser], async(req, res)=>{
     const sites = await Site.find();
-    res.json({data: sites, error: null})
+    const typeInfo = await SitesType.find()
+    res.json({data: sites, error: null, sitesTypes: typeInfo})
 });
 
 router.get('/:id', async(req,res)=>{

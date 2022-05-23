@@ -5,10 +5,16 @@ import Navbar from "../../components/navbar";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import Tabs from "../../components/tabs";
+import Searchbar from "../../components/searchbar";
+import Filtercity from "../../components/filtercity";
+import Filtertypesite from "../../components/filtertypesite";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [searches, setSearches] = useState("");
+  const [typeInfo, setTypeInfo] = useState([]);
+  const [filtersitetype, setFiltersitetype] = useState("");
+  const [filtercity, setFiltercity] = useState("");
   const [sites, setSites] = useState([]);
   useEffect(() => {
     getSites();
@@ -52,6 +58,7 @@ export default function Home() {
       .then((res) => {
         if (!res.data.error) {
           setSites(res.data.data);
+          setTypeInfo(res.data.sitesTypes);
         } else {
           document.cookie = "token=; max-age=0";
           console.log(res);
@@ -66,27 +73,48 @@ export default function Home() {
       </div>
 
       <div className="container">
+        <div className="row"></div>
         <div className="row">
-          <Tabs />
+          <Searchbar searches={searches} setSearches={setSearches} size={"6"} />
+          <Filtercity />
+          <Filtertypesite
+            types={typeInfo}
+            setFiltersitetype={setFiltersitetype}
+          />
         </div>
         <div className="row">
           {sites.map((sites) => {
-            return (
-              <div className="col s4" key={sites._id}>
-                <div className="card medium hoverable">
-                  <div className="card-image">
-                    <img src={sites.img_path} />
-                    <span className="card-title">{sites.title}</span>
-                  </div>
-                  <div className="card-content">
-                    <p>{sites.description}</p>
-                  </div>
-                  <div className="card-action">
-                    <a>visit</a>
+            function FilterType() {
+              for (let i = 0; i <= sites.type_site.length; i++) {
+                if (sites.type_site[0].includes(filtersitetype)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }
+            }
+
+            if (
+              sites.title.toLowerCase().includes(searches.toLowerCase()) &&
+              FilterType()
+            ) {
+              return (
+                <div className="col s4" key={sites._id}>
+                  <div className="card medium hoverable">
+                    <div className="card-image">
+                      <img src={sites.img_path} />
+                      <span className="card-title">{sites.title}</span>
+                    </div>
+                    <div className="card-content">
+                      <p>{sites.description}</p>
+                    </div>
+                    <div className="card-action">
+                      <a>visit</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            }
           })}
         </div>
       </div>

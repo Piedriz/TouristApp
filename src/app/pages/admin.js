@@ -321,7 +321,7 @@ export default function Admin() {
           <div className="col s8">
             <div className="card">
               <div className="card-content">
-                <Searchbar searches={searches} setSearches={setSearches} />
+                <Searchbar searches={searches} setSearches={setSearches} size={"12"} />
                 <table>
                   <thead>
                     <tr>

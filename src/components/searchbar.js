@@ -1,14 +1,20 @@
 import React from "react";
 import { useState } from "react";
 
-export default function Searchbar({searches, setSearches}){
-
-    function handleSearch(e){
-        setSearches(e.target.value)
-        console.log(searches)
-    }
-
-    return(
-        <input type="text" value={searches} placeholder='buscar'  onChange={handleSearch}/>
-    );
+export default function Searchbar({ searches, setSearches, size }) {
+  function handleSearch(e) {
+    setSearches(e.target.value);
+  }
+  console.log(searches)
+  const inputSize = `input-field col s${size}`;
+  return (
+    <div className={inputSize}>
+      <input
+        type="text"
+        value={searches}
+        placeholder="Buscar Sítio"
+        onChange={handleSearch}
+      />
+    </div>
+  );
 }
