@@ -15,7 +15,6 @@ export default function Filtertypesite({types, setFiltersitetype}) {
             setFiltersitetype('')
         }else{
             setFiltersitetype(e.value)
-            console.log(e.value)
         }   
     }
 

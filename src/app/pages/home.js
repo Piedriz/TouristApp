@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Searchbar from "../../components/searchbar";
 import Filtercity from "../../components/filtercity";
 import Filtertypesite from "../../components/filtertypesite";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -66,6 +67,15 @@ export default function Home() {
         }
       });
   }
+  function FilterType(sites) {
+    for (let i = 0; i <= sites.type_site.length; i++) {
+      if (sites.type_site[0].includes(filtersitetype)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
   return (
     <>
       <div className="row">
@@ -84,19 +94,9 @@ export default function Home() {
         </div>
         <div className="row">
           {sites.map((sites) => {
-            function FilterType() {
-              for (let i = 0; i <= sites.type_site.length; i++) {
-                if (sites.type_site[0].includes(filtersitetype)) {
-                  return true;
-                } else {
-                  return false;
-                }
-              }
-            }
-
             if (
               sites.title.toLowerCase().includes(searches.toLowerCase()) &&
-              FilterType()
+              FilterType(sites)
             ) {
               return (
                 <div className="col s4" key={sites._id}>
@@ -109,7 +109,7 @@ export default function Home() {
                       <p>{sites.description}</p>
                     </div>
                     <div className="card-action">
-                      <a>visit</a>
+                      <a><Link to={`/home/${sites._id}`}>Visitar</Link></a>
                     </div>
                   </div>
                 </div>
