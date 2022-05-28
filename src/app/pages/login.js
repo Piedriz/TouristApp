@@ -17,7 +17,7 @@ export default function Login() {
   function logAlert() {
     let timerInterval;
     Swal.fire({
-      icon: 'success',
+      icon: "success",
       title: "Logueado!",
       html: "Usted será redirigido a la página principal.",
       timer: 3000,
@@ -28,8 +28,7 @@ export default function Login() {
       allowEnterKey: false,
       didOpen: () => {
         Swal.showLoading();
-        timerInterval = setInterval(() => {
-        }, 100);
+        timerInterval = setInterval(() => {}, 100);
       },
       willClose: () => {
         clearInterval(timerInterval);
@@ -38,49 +37,25 @@ export default function Login() {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
         console.log("I was closed by the timer");
-        navigate('/home')
+        navigate("/home");
       }
     });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = document.cookie.replace("token=", "");
-    axios.get("/api/user/login",{
-      headers: {
-        loginstate: token,
-      },
-    }).then(data => {
-      if(data.data.error){
-      let timerInterval;
-      Swal.fire({
-        icon: 'error',
-        title: `${data.data.message}`,
-        html: "Usted será redirigido a la página principal.",
-        timer: 3000,
-        timerProgressBar: true,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        didOpen: () => {
-          Swal.showLoading();
-          timerInterval = setInterval(() => {
-          }, 100);
+    axios
+      .get("/api/user/login", {
+        headers: {
+          loginstate: token,
         },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      }).then((result) => {
-        /* Read more about handling dismissals below */
-        if (result.dismiss === Swal.DismissReason.timer) {
-          console.log("I was closed by the timer");
-          navigate('/home')
+      })
+      .then((data) => {
+        if (data.data.error) {
+          navigate("/home");
         }
       });
-    }
-    })
-  })
-
+  });
 
   function postUser(e) {
     const email = document.querySelector("#email").value;
@@ -91,16 +66,15 @@ export default function Login() {
         password: password,
       })
       .then((res) => {
-        if (!res.data.error){
+        if (!res.data.error) {
           document.cookie = `token=${res.data.token}; path=/; samesite=strict`;
-          logAlert()
-          
+          logAlert();
         } else {
           Swal.fire({
-            icon: 'error',
-            title: 'Ha ocurrido un error',
-            text: `${res.data.message}`
-          })
+            icon: "error",
+            title: "Ha ocurrido un error",
+            text: `${res.data.message}`,
+          });
         }
       });
 
@@ -118,7 +92,7 @@ export default function Login() {
                   <div className="input-field col s12">
                     <i className="material-icons prefix">email</i>
                     <input
-                    placeholder="email"
+                      placeholder="email"
                       required
                       type="email"
                       id="email"
@@ -130,7 +104,7 @@ export default function Login() {
                   <div className="input-field col s12">
                     <i className="material-icons prefix">vpn_key</i>
                     <input
-                    placeholder="password"
+                      placeholder="password"
                       required
                       type="password"
                       id="password"

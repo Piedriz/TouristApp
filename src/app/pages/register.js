@@ -49,32 +49,8 @@ export default function Register() {
       },
     }).then(data => {
       if(data.data.error){
-      let timerInterval;
-      Swal.fire({
-        icon: 'error',
-        title: `${data.data.message}`,
-        html: "Usted será redirigido a la página principal.",
-        timer: 3000,
-        timerProgressBar: true,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        didOpen: () => {
-          Swal.showLoading();
-          timerInterval = setInterval(() => {
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      }).then((result) => {
-        /* Read more about handling dismissals below */
-        if (result.dismiss === Swal.DismissReason.timer) {
-          console.log("I was closed by the timer");
-          navigate('/home')
-        }
-      });
+        navigate("/home")
+      
     }
     })
   })
