@@ -1,19 +1,30 @@
 import axios from "axios";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../../components/navbar";
-import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { Marker } from "@react-google-maps/api";
 
 const IMG = styled.img`
   width: 100%;
   height: 100%;
 `;
+const containerStyle = {
+  width: "400px",
+  height: "400px",
+};
 
 export default function SiteDetails() {
   const [sitedetail, setSitedetail] = useState([]);
   const { id } = useParams();
+
+  const position = {
+    lat: parseFloat(sitedetail.lat),
+    lng: parseFloat(sitedetail.lng),
+  };
+  
 
   useEffect(() => {
     getSite();
@@ -44,26 +55,20 @@ export default function SiteDetails() {
         </div>
 
         <div className="row">
-          <div className="col s4">
+          <div className="col s6">
             <p>{sitedetail.description}</p>
           </div>
 
           <div className="col s6">
-            <MapContainer
-              center={[51.505, -0.09]}
-              zoom={13}
-              scrollWheelZoom={false}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[51.505, -0.09]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </MapContainer>
+            <LoadScript googleMapsApiKey="AIzaSyCsmL7V9o4e-A-YyRY0kyXIhpLoyRBV5iU">
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={position}
+                zoom={12}
+              >
+                <Marker position={position} />
+              </GoogleMap>
+            </LoadScript>
           </div>
         </div>
       </div>

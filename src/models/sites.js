@@ -10,6 +10,8 @@ const SiteSchema = new Schema({
     }],
     description: {type: String, required: true},
     img_path: {type: String, required: true},
+    lat: {type: String, required: true},
+    lng: {type: String, required: true}
 }); 
  
 module.exports = mongoose.model('Site', SiteSchema);

@@ -62,6 +62,8 @@ router.post('/',upload.single('img_DATA'), async(req, res)=>{
     site.title = req.body.title;
     site.description = req.body.description;
     site.img_path = 'img/uploads/'+req.file.filename;
+    site.lat = req.body.lat
+    site.lng = req.body.lng
     try{
         await site.save();
         res.json({error: null, data:site})

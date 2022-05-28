@@ -15,7 +15,9 @@ export default function Admin() {
       "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
     img_DATA: null,
     type_site: "Otro",
-    _id: ''
+    _id: '',
+    lat: '',
+    lng:''
   });
 
   const [searches, setSearches] = useState("");
@@ -115,6 +117,8 @@ export default function Admin() {
           img_DATA: data.img_DATA,
           type_site: data.type_site,
           _id: data._id,
+          lat: data.lat,
+          lng:data.lng
         });
       })
       .catch((err) => console.log(err));
@@ -128,6 +132,8 @@ export default function Admin() {
       formData.append("img_URL", data.img_URL);
       formData.append("img_DATA", data.img_DATA);
       formData.append("type_site", data.type_site);
+      formData.append("lat", data.lat);
+      formData.append("lng", data.lng);
 
       axios.put("/api/"+data._id,formData)
         .then((data) =>{
@@ -144,7 +150,10 @@ export default function Admin() {
             "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
           img_DATA: null,
           type_site: "Otro",
-          _id: ''
+          _id: '',
+          lat: '',
+          lng:''
+          
         });
         fetchSites()
         e.preventDefault()
@@ -155,6 +164,8 @@ export default function Admin() {
       formData.append("img_URL", data.img_URL);
       formData.append("img_DATA", data.img_DATA);
       formData.append("type_site", data.type_site);
+      formData.append("lat", data.lat);
+      formData.append("lng", data.lng);
       axios.post("/api", formData).then((res) => {
         if (!res.data.error) {
           console.log("seguro");
@@ -170,7 +181,9 @@ export default function Admin() {
               "https://w7.pngwing.com/pngs/527/625/png-transparent-scalable-graphics-computer-icons-upload-uploading-cdr-angle-text.png",
             img_DATA: null,
             type_site: "Otro",
-            _id: ''
+            _id: '',
+            lat: '',
+            lng:''
           });
 
           fetchSites();
@@ -193,7 +206,9 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: data.type_site,
-      _id: data._id
+      _id: data._id,
+      lat: data.lat,
+      lng:data.lng
     });
   }
   function handleChangeDescription(e) {
@@ -203,7 +218,9 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: data.type_site,
-      _id: data._id
+      _id: data._id,
+      lat: data.lat,
+      lng:data.lng
     });
   }
   function handleChangeImg(e) {
@@ -216,7 +233,33 @@ export default function Admin() {
       img_URL: URL.createObjectURL(file),
       img_DATA: file,
       type_site: data.type_site,
-      _id: data._id
+      _id: data._id,
+      lat: data.lat,
+      lng:data.lng
+    });
+  }
+  function handleChangeLat(e){
+    setData({
+      title: data.title,
+      description: data.description,
+      img_URL: data.img_URL,
+      img_DATA: data.img_DATA,
+      type_site: data.type_site,
+      _id: data._id,
+      lat: e.target.value,
+      lng:data.lng
+    });
+  }
+  function handleChangeLng(e){
+    setData({
+      title: data.title,
+      description: data.description,
+      img_URL: data.img_URL,
+      img_DATA: data.img_DATA,
+      type_site: data.type_site,
+      _id: data._id,
+      lat: data.lat,
+      lng:e.target.value
     });
   }
 
@@ -229,7 +272,9 @@ export default function Admin() {
       img_URL: data.img_URL,
       img_DATA: data.img_DATA,
       type_site: values,
-      _id: data._id
+      _id: data._id,
+      lat: data.lat,
+      lng:data.lng
     });
   }
 
@@ -287,6 +332,30 @@ export default function Admin() {
                       </div>
                     </div>
                   </div>
+
+                  <div className="row">
+                    <div className="input-field col s12">
+                      <input
+                        required
+                        name="lat"
+                        value={data.lat}
+                        onChange={handleChangeLat}
+                        placeholder="Latitud"
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="input-field col s12">
+                      <input
+                        required
+                        name="lng"
+                        value={data.lng}
+                        onChange={handleChangeLng}
+                        placeholder="Longitud"
+                      ></input>
+                    </div>
+                  </div>
+
                   <div className="row">
                     <div className="input-field col s12">
                       <Select
@@ -321,7 +390,7 @@ export default function Admin() {
           <div className="col s8">
             <div className="card">
               <div className="card-content">
-                <Searchbar searches={searches} setSearches={setSearches} size={"12"} />
+                <Searchbar searches={searches} setSearches={setSearches} size={12}/>
                 <table>
                   <thead>
                     <tr>
