@@ -15,7 +15,6 @@ export default function Home() {
   const [searches, setSearches] = useState("");
   const [typeInfo, setTypeInfo] = useState([]);
   const [filtersitetype, setFiltersitetype] = useState("");
-  const [filtercity, setFiltercity] = useState("");
   const [sites, setSites] = useState([]);
   useEffect(() => {
     getSites();
@@ -104,6 +103,7 @@ export default function Home() {
                     <div className="card-image">
                       <img src={sites.img_path} />
                       <span className="card-title">{sites.title}</span>
+                      <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
                     </div>
                     <div className="card-content">
                       <p>{sites.description}</p>

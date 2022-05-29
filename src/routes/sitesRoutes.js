@@ -31,14 +31,13 @@ router.get('/home',[verifyToken,isUser], async(req, res)=>{
     res.json({data: sites, error: null, sitesTypes: typeInfo})
 });
 router.get('/home/:id', async(req, res)=>{
-    console.log("entrando")
     const site = await Site.findById(req.params.id);
+    console.log(site)
     res.json({data: site})
 });
 
 router.get('/:id', async(req,res)=>{
     const site = await Site.findById(req.params.id)
-    res.json(site);
 });
 
 router.post('/',upload.single('img_DATA'), async(req, res)=>{

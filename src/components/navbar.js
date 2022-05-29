@@ -16,7 +16,7 @@ export default function Navbar(){
                     <a className="brand-logo"><Link to="/home">TouristAPP</Link></a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li onClick={signOff}><a>Cerrar sección</a></li>
-                        <li><Link to="/login">Perfil</Link></li>
+                        <li><Link to="/perfil">Perfil</Link></li>
                         <li><Link to="/home">Home</Link></li>
                     </ul>
             </div>

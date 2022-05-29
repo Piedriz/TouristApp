@@ -73,7 +73,7 @@ export default function Login() {
           Swal.fire({
             icon: "error",
             title: "Ha ocurrido un error",
-            text: `${res.data.message}`,
+            text: `${res.data.error}`,
           });
         }
       });

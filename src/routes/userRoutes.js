@@ -8,14 +8,19 @@ const bcrypt = require('bcrypt');
 // validation
 const Joi = require('joi');
 const loginState= require('../middlewares/loginState')
+const userPerfil = require('../middlewares/userInfo')
 
-
-//const isAdmin = require('../middlewares/authUser')
 
 const schemaRegister = Joi.object({
     email: Joi.string().min(6).max(255).required().email(),
     password: Joi.string().min(6).max(1024).required(),
     roles: Joi.array()
+})
+const schemaPass = Joi.object({
+    email: Joi.string().min(6).max(255).required().email(),
+    password: Joi.string().min(6).max(1024).required(),
+    roles: Joi.array(),
+    id: Joi.string()
 })
 
 const schemaLogin = Joi.object({
@@ -84,7 +89,6 @@ router.post('/login', async (req, res) => {
     
     const user = await User.findOne({ email: req.body.email }).populate('roles');
     if (!user) return res.json({ error: 'Usuario no encontrado' });
-
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.json({ error: 'contraseña no válida' })
 
@@ -98,6 +102,25 @@ router.post('/login', async (req, res) => {
         token: token
     })
 })
+
+router.get('/perfil',userPerfil, async (req, res)=>{
+    const data = await User.findById(req.idperfil)
+    res.json({error: null, data:data})
+})
+
+
+router.put('/:id', async (req, res)=>{
+    const { error } = schemaPass.validate(req.body);
+    if (error) return res.json({ error:true, message: error.details[0].message })
+    const {email,roles} = req.body
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(req.body.password, salt);
+    const newPass = {email,password,roles}
+    await User.findByIdAndUpdate(req.params.id, newPass);
+    res.json({data: newPass ,error: null, message:"Contraseña editada con exito"});
+})
+
+
 
 
 
