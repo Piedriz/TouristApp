@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Navbar from "../../components/navbar";
@@ -12,8 +12,8 @@ const IMG = styled.img`
   height: 100%;
 `;
 const containerStyle = {
-  width: "400px",
-  height: "400px",
+  width: "100%",
+  height: "500px",
 };
 
 export default function SiteDetails() {
@@ -24,7 +24,6 @@ export default function SiteDetails() {
     lat: parseFloat(sitedetail.lat),
     lng: parseFloat(sitedetail.lng),
   };
-  
 
   useEffect(() => {
     getSite();
@@ -42,24 +41,25 @@ export default function SiteDetails() {
       <div className="row">
         <Navbar />
       </div>
-
       <div className="container">
-        <div className="row">
-          <h3>{sitedetail.title}</h3>
-        </div>
-
-        <div className="row">
-          <div className="col s12 center-align">
-            <IMG className="center-align" src={sitedetail.img_path} />
+        <div class="col s12 m7">
+          <h2 class="header">{sitedetail.title}</h2>
+          <div class="card hoverable">
+            <div class="card-image">
+              <img src={sitedetail.img_path} />
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <p>
+                  {sitedetail.description}
+                </p>
+              </div>
+              
+            </div>
           </div>
         </div>
-
         <div className="row">
-          <div className="col s6">
-            <p>{sitedetail.description}</p>
-          </div>
-
-          <div className="col s6">
+          <div className="col s12">
             <LoadScript googleMapsApiKey="AIzaSyCsmL7V9o4e-A-YyRY0kyXIhpLoyRBV5iU">
               <GoogleMap
                 mapContainerStyle={containerStyle}

@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 const Div = styled.div`
@@ -17,7 +17,7 @@ export default function Register() {
   function logAlert() {
     let timerInterval;
     Swal.fire({
-      icon: 'success',
+      icon: "success",
       title: "Registrado!",
       html: "Usted será redirigido al inicio de sección.",
       timer: 3000,
@@ -28,8 +28,7 @@ export default function Register() {
       allowEnterKey: false,
       didOpen: () => {
         Swal.showLoading();
-        timerInterval = setInterval(() => {
-        }, 100);
+        timerInterval = setInterval(() => {}, 100);
       },
       willClose: () => {
         clearInterval(timerInterval);
@@ -37,23 +36,24 @@ export default function Register() {
     }).then((result) => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
-        navigate('/login')
+        navigate("/login");
       }
     });
   }
-  useEffect(()=>{
+  useEffect(() => {
     const token = document.cookie.replace("token=", "");
-    axios.get("/api/user/register",{
-      headers: {
-        loginstate: token,
-      },
-    }).then(data => {
-      if(data.data.error){
-        navigate("/home")
-      
-    }
-    })
-  })
+    axios
+      .get("/api/user/register", {
+        headers: {
+          loginstate: token,
+        },
+      })
+      .then((data) => {
+        if (data.data.error) {
+          navigate("/home");
+        }
+      });
+  });
 
   function postUser(e) {
     const email = document.querySelector("#email").value;
@@ -65,14 +65,14 @@ export default function Register() {
         password: password,
       })
       .then((res) => {
-        if (!res.data.error){
-          logAlert()
+        if (!res.data.error) {
+          logAlert();
         } else {
           Swal.fire({
-            icon: 'error',
-            title: 'Ha ocurrido un error',
-            text: `${res.data.error}`
-          })
+            icon: "error",
+            title: "Ha ocurrido un error",
+            text: `${res.data.error}`,
+          });
         }
       });
 
@@ -103,7 +103,7 @@ export default function Register() {
                   <div className="input-field col s12">
                     <i className="material-icons prefix">vpn_key</i>
                     <input
-                      required  
+                      required
                       type="password"
                       id="password"
                       className="validate"

@@ -16,8 +16,11 @@ export default function Home() {
   const [typeInfo, setTypeInfo] = useState([]);
   const [filtersitetype, setFiltersitetype] = useState("");
   const [sites, setSites] = useState([]);
+  const [userperfil, setUserperfil] = useState([])
+  const [favs, setFavs] = useState("boder")
   useEffect(() => {
     getSites();
+    getUser();
   }, []);
 
   function logAlert(err) {
@@ -45,6 +48,23 @@ export default function Home() {
         navigate("/login");
       }
     });
+  }
+
+  function getUser(){
+    const token = document.cookie.replace("token=", "");
+    axios
+      .get("/api/user/perfil", {
+        headers: {
+          usertoken: token,
+        },
+      })
+      .then((res) => {
+        if (res.data.error) {
+          navigate("/login");
+        } else {
+          setUserperfil(res.data.data);
+        }
+      });
   }
 
   function getSites() {
@@ -75,6 +95,15 @@ export default function Home() {
       }
     }
   }
+  function addfavorite(idsite){
+    const site = {id: idsite}
+    axios.put('/api/user/fav/'+userperfil._id, site)
+    .then(res =>{
+      if(!res.data.error){
+        M.toast({ html: res.data.message });
+      }
+    })
+  }
   return (
     <>
       <div className="row">
@@ -100,16 +129,15 @@ export default function Home() {
               return (
                 <div className="col s4" key={sites._id}>
                   <div className="card medium hoverable">
-                    <div className="card-image">
+                    <div className="card-image" onClick={()=>{navigate(`/home/${sites._id}`)}}>
                       <img src={sites.img_path} />
                       <span className="card-title">{sites.title}</span>
-                      <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
                     </div>
                     <div className="card-content">
                       <p>{sites.description}</p>
                     </div>
                     <div className="card-action">
-                      <a><Link to={`/home/${sites._id}`}>Visitar</Link></a>
+                    <a class="btn" onClick={()=>addfavorite(sites._id)}> <i className="small material-icons">favorite</i></a>
                     </div>
                   </div>
                 </div>

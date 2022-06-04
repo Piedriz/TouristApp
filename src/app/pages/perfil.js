@@ -10,9 +10,11 @@ export default function Perfil() {
     password: "",
     id: "",
     roles: "",
+    favorites: [],
   });
   const navigate = useNavigate();
-  useEffect(() => {
+
+  function getUsers(){
     const token = document.cookie.replace("token=", "");
     axios
       .get("/api/user/perfil", {
@@ -29,10 +31,16 @@ export default function Perfil() {
             id: data.data.data._id,
             password: "",
             roles: data.data.data.roles,
+            favorites: data.data.data.favorites,
           });
         }
       });
+  }
+
+  useEffect(() => {
+    getUsers()
   }, []);
+
 
   function changePassword(e) {
     console.log(userperfil);
@@ -53,7 +61,18 @@ export default function Perfil() {
       password: e.target.value,
       id: userperfil.id,
       roles: userperfil.roles,
+      favorites: userperfil.favorites,
     });
+  }
+  function deletefavorite(idsite){
+    const site = {id: idsite}
+    axios.put('/api/user/fav/'+userperfil.id, site)
+    .then(res =>{
+      if(!res.data.error){
+        M.toast({ html: res.data.message });
+        getUsers()
+      }
+    })
   }
 
   return (
@@ -110,38 +129,43 @@ export default function Perfil() {
           </div>
 
           <div className="col s4">
-          <ul class="collection with-header">
-          <li class="collection-header"><h4>Favoritos</h4></li>
-            <li class="collection-item avatar">
-              <img src="images/yuna.jpg" alt="" class="circle" />
-              <span class="title">Title</span>
-              <p>
-                First Line <br />
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content">
-                <i class="material-icons">delete</i>
-              </a>
-            </li>
-          </ul>
-        </div>
+            <ul class="collection with-header">
+              <li class="collection-header">
+                <h4>Favoritos</h4>
+              </li>
 
-        <div className="col s4">
-          <ul class="collection with-header">
-          <li class="collection-header"><h4>Visitados</h4></li>
-            <li class="collection-item avatar">
-              <img src="images/yuna.jpg" alt="" class="circle" />
-              <span class="title">Title</span>
-              <p>
-                First Line <br />
-                Second Line
-              </p>
-              <a href="#!" class="secondary-content">
-                <i class="material-icons">delete</i>
-              </a>
-            </li>
-          </ul>
-        </div>
+              {userperfil.favorites.map((site) => {
+                return (
+                  <li class="collection-item avatar" key={site._id}>
+                    <img src={site.img_path} alt="" class="circle" />
+                    <span class="title">{site.title}</span>
+                    <a onClick={()=>deletefavorite(site._id)} class="secondary-content">
+                      <i class="material-icons">delete</i>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="col s4">
+            <ul class="collection with-header">
+              <li class="collection-header">
+                <h4>Visitados</h4>
+              </li>
+              <li class="collection-item avatar">
+                <img src="images/yuna.jpg" alt="" class="circle" />
+                <span class="title">Title</span>
+                <p>
+                  First Line <br />
+                  Second Line
+                </p>
+                <a  class="secondary-content">
+                  <i class="material-icons">delete</i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </>
