@@ -103,7 +103,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/perfil", userPerfil, async (req, res) => {
-  const data = await User.findById(req.idperfil).populate('favorites');
+  const data = await User.findById(req.idperfil).populate("favorites").populate("visits");
   res.json({ error: null, data: data });
 });
 
@@ -124,8 +124,6 @@ router.put("/:id", async (req, res) => {
 });
 
 router.put("/fav/:id", async (req, res) => {
-  const user = await User.findById(req.params.id);
-  const { email, password, roles } = user;
   const foundSites = await Site.findById(req.body.id);
   const found = await User.findOne({
     _id: req.params.id,
@@ -152,6 +150,37 @@ router.put("/fav/:id", async (req, res) => {
       message: "Eliminado de favoritos",
       isfavorite: false,
       data: newFavs,
+    });
+  }
+});
+
+router.put("/visited/:id", async (req, res) => {
+  const foundSites = await Site.findById(req.body.id);
+  const found = await User.findOne({
+    _id: req.params.id,
+    visits: { $in: req.body.id },
+  });
+
+  if (!found) {
+    const newVisited = await User.findByIdAndUpdate(req.params.id, {
+      $push: { visits: foundSites._id },
+    });
+    res.json({
+      error: null,
+      message: "Agregado a lista de visitados",
+      isfavorite: true,
+      data: newVisited,
+    });
+  } else {
+    const newVisited = await User.findByIdAndUpdate(req.params.id, {
+      $pull: { visits: foundSites._id },
+    });
+
+    res.json({
+      error: null,
+      message: "Eliminado de lista de visitados",
+      isfavorite: false,
+      data: newVisited,
     });
   }
 });

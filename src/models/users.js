@@ -11,6 +11,10 @@ const UserSchema = new Schema({
     favorites: [{
         ref: "Site",
         type: Schema.Types.ObjectId
+    }],
+    visits: [{
+        ref: "Site",
+        type: Schema.Types.ObjectId
     }]
 }); 
  

@@ -104,6 +104,15 @@ export default function Home() {
       }
     })
   }
+  function addvisited(idsite){
+    const site = {id: idsite}
+    axios.put("api/user/visited/"+userperfil._id, site)
+    .then(res =>{
+      if(!res.data.error){
+        M.toast({ html: res.data.message });
+      }
+    })
+  }
   return (
     <>
       <div className="row">
@@ -120,6 +129,7 @@ export default function Home() {
             setFiltersitetype={setFiltersitetype}
           />
         </div>
+        
         <div className="row">
           {sites.map((sites) => {
             if (
@@ -137,7 +147,8 @@ export default function Home() {
                       <p>{sites.description}</p>
                     </div>
                     <div className="card-action">
-                    <a class="btn" onClick={()=>addfavorite(sites._id)}> <i className="small material-icons">favorite</i></a>
+                    <a className="btn" onClick={()=>addfavorite(sites._id)}> <i className="small material-icons">favorite</i></a>
+                    <a className="btn" onClick={()=>addvisited(sites._id)}> <i className="small material-icons">location_on</i></a>
                     </div>
                   </div>
                 </div>

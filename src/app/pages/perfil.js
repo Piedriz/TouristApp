@@ -9,8 +9,10 @@ export default function Perfil() {
     email: "",
     password: "",
     id: "",
-    roles: "",
+    roles: [],
     favorites: [],
+    visits: [],
+
   });
   const navigate = useNavigate();
 
@@ -32,6 +34,7 @@ export default function Perfil() {
             password: "",
             roles: data.data.data.roles,
             favorites: data.data.data.favorites,
+            visits: data.data.data.visits
           });
         }
       });
@@ -62,11 +65,22 @@ export default function Perfil() {
       id: userperfil.id,
       roles: userperfil.roles,
       favorites: userperfil.favorites,
+      visits: userperfil.favorites,
     });
   }
   function deletefavorite(idsite){
     const site = {id: idsite}
     axios.put('/api/user/fav/'+userperfil.id, site)
+    .then(res =>{
+      if(!res.data.error){
+        M.toast({ html: res.data.message });
+        getUsers()
+      }
+    })
+  }
+  function deletevisited(idsite){
+    const site = {id: idsite}
+    axios.put('/api/user/visited/'+userperfil.id, site)
     .then(res =>{
       if(!res.data.error){
         M.toast({ html: res.data.message });
@@ -153,17 +167,18 @@ export default function Perfil() {
               <li class="collection-header">
                 <h4>Visitados</h4>
               </li>
-              <li class="collection-item avatar">
-                <img src="images/yuna.jpg" alt="" class="circle" />
-                <span class="title">Title</span>
-                <p>
-                  First Line <br />
-                  Second Line
-                </p>
-                <a  class="secondary-content">
-                  <i class="material-icons">delete</i>
-                </a>
-              </li>
+
+              {userperfil.visits.map((site) => {
+                return (
+                  <li class="collection-item avatar" key={site._id}>
+                    <img src={site.img_path} alt="" class="circle" />
+                    <span class="title">{site.title}</span>
+                    <a onClick={()=>deletevisited(site._id)} class="secondary-content">
+                      <i class="material-icons">delete</i>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
