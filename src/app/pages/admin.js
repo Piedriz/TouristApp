@@ -109,7 +109,6 @@ export default function Admin() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data),
         setData({
           title: data.title,
           description: data.description,

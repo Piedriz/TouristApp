@@ -40,6 +40,7 @@ router.get("/home/:id", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const site = await Site.findById(req.params.id);
+  res.json(site)
 });
 
 router.post("/", upload.single("img_DATA"), async (req, res) => {
@@ -76,7 +77,7 @@ router.post("/", upload.single("img_DATA"), async (req, res) => {
 });
 
 router.put("/:id", upload.single("img_DATA"), async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, lng, lat } = req.body;
   console.log(req.body);
   try {
     if (req.body.type_site) {
@@ -84,7 +85,7 @@ router.put("/:id", upload.single("img_DATA"), async (req, res) => {
       const found = await SitesType.find({ name: { $in: typesArray } });
       const type_site = found.map((found) => found._id);
       const img_path = "img/uploads/" + req.file.filename;
-      const newSite = { title, description, img_path, type_site };
+      const newSite = { title, description, img_path, type_site, lng, lat };
       await Site.findByIdAndUpdate(req.params.id, newSite);
       res.json({
         data: newSite,
