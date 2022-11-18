@@ -9,6 +9,7 @@ export default function Searchbar({ searches, setSearches, size }) {
   const inputSize = `input-field col s${size}`;
   return (
     <div className={inputSize}>
+      <i class="material-icons prefix">search</i>
       <input
         type="text"
         value={searches}

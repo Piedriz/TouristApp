@@ -42,24 +42,23 @@ export default function SiteDetails() {
         <Navbar />
       </div>
       <div className="container">
-        <div class="col s12 m7">
-          <h2 class="header">{sitedetail.title}</h2>
-          <div class="card hoverable">
-            <div class="card-image">
+        <div className="col s12 m7">
+          <h2 className="header center-align bold">{sitedetail.title}</h2>
+          <div className="card hoverable">
+            <div className="card-image">
               <img src={sitedetail.img_path} />
+              <a class="btn-floating halfway-fab waves-effect waves-light blue"><i class="material-icons">add</i></a>
             </div>
-            <div class="card-stacked">
-              <div class="card-content">
-                <p>
-                  {sitedetail.description}
-                </p>
+            <div className="card-stacked">
+              <div className="card-content">
+                <p>{sitedetail.description}</p>
               </div>
-              
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col s12">
+            <div className="card">
             <LoadScript googleMapsApiKey="AIzaSyCsmL7V9o4e-A-YyRY0kyXIhpLoyRBV5iU">
               <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -69,6 +68,7 @@ export default function SiteDetails() {
                 <Marker position={position} />
               </GoogleMap>
             </LoadScript>
+            </div>
           </div>
         </div>
       </div>
