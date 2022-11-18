@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 
 export default function Searchbar({ searches, setSearches, size }) {
   function handleSearch(e) {
